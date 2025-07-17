@@ -1,0 +1,30 @@
+[package]
+name = "host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+methods = { path = "../methods" }
+risc0-zkvm = { version = "^2.3.0" }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+serde = "1.0"
+jwt-core = { path = "../core" }
+jwt-compact = { version = "0.8", features = ["rsa"] }
+borsh = "1.5.7"
+
+[features]
+cuda = ["risc0-zkvm/cuda"]
+default = []
+prove = ["risc0-zkvm/prove"]
+
+[[bin]]
+name = "gen"
+path = "./src/bin/gen.rs"
+
+[[bin]]
+name = "prove"
+path = "./src/bin/prove.rs"
+
+[[bin]]
+name = "verify"
+path = "./src/bin/verify.rs"
