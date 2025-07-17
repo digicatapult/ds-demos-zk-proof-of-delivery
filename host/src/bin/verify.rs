@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::io::Read;
+
 use borsh::de::BorshDeserialize;
 use methods::VERIFY_TOKEN_WITH_SOME_KEY_ID;
 use risc0_zkvm::Receipt;
@@ -21,7 +23,13 @@ fn main() {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    let receipt = std::fs::read("./receipt.bin").expect("Could not read receipt from file");
+    let args: Vec<String> = std::env::args().collect();
+
+    let mut f = std::fs::File::open(&args[1]).expect("Could not find receipt file");
+    let mut receipt = Vec::new();
+    f.read_to_end(&mut receipt)
+        .expect("Could not parse token from file");
+
     let receipt =
         Receipt::try_from_slice(&receipt).expect("Could not deserialise bytes as receipt");
 
