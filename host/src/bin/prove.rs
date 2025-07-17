@@ -29,7 +29,7 @@ fn main() {
     f.read_to_string(&mut token)
         .expect("Could not parse token from file");
 
-    let mut pks = Vec::new();
+    let mut pks: Vec<String> = Vec::new();
 
     for i in 2..args.len() {
         let mut f = File::open(&args[i]).expect("Could not find public key file");
@@ -39,7 +39,7 @@ fn main() {
         pks.push(pk);
     }
 
-    let (receipt, _journal) = prove_token_validation(token, &pks[0], &pks[1], &pks[2]);
+    let (receipt, _journal) = prove_token_validation(token, &pks);
 
     let mut f = std::fs::File::create("./receipt.bin").expect("Could not create receipt file");
     let mut serialized_receipt = Vec::new();

@@ -15,23 +15,15 @@
 use methods::VERIFY_TOKEN_WITH_SOME_KEY_ELF;
 use risc0_zkvm::{default_prover, ExecutorEnv, Receipt};
 
-pub fn prove_token_validation(
-    token: String,
-    pk_0: &String,
-    pk_1: &String,
-    pk_2: &String,
-) -> (Receipt, String) {
-    let env = ExecutorEnv::builder()
-        .write(&token)
-        .expect("failed to write JWT to env")
-        .write(pk_0)
-        .expect("failed to write pk to env")
-        .write(pk_1)
-        .expect("failed to write pk to env")
-        .write(pk_2)
-        .expect("failed to write pk to env")
-        .build()
-        .expect("failed to build env");
+pub fn prove_token_validation(token: String, pks: &Vec<String>) -> (Receipt, String) {
+    let mut binding = ExecutorEnv::builder();
+    let env = binding.write(&token).expect("failed to write JWT to env");
+    env.write(&pks.len())
+        .expect("Could not write number of public keys to env");
+    for pk in pks.iter() {
+        env.write(pk).expect("failed to write pk to env");
+    }
+    let env = env.build().expect("failed to build env");
 
     let prover = default_prover();
 
