@@ -24,6 +24,10 @@ fn main() {
 
     let args: Vec<String> = std::env::args().collect();
 
+    if args.len() < 4 {
+        panic!("Usage: prove /path/to/token.jwt /path/to/receipt.bin /path/to/public_key_1.json ... /path/to/public_key_n.json");
+    }
+
     let mut f = File::open(&args[1]).expect("Could not find token file");
     let mut token = String::new();
     f.read_to_string(&mut token)
@@ -31,7 +35,7 @@ fn main() {
 
     let mut pks: Vec<String> = Vec::new();
 
-    for i in 2..args.len() {
+    for i in 3..args.len() {
         let mut f = File::open(&args[i]).expect("Could not find public key file");
         let mut pk = String::new();
         f.read_to_string(&mut pk)
@@ -41,7 +45,7 @@ fn main() {
 
     let (receipt, _journal) = prove_token_validation(token, &pks);
 
-    let mut f = std::fs::File::create("./receipt.bin").expect("Could not create receipt file");
+    let mut f = std::fs::File::create(&args[2]).expect("Could not create receipt file");
     let mut serialized_receipt = Vec::new();
     receipt
         .serialize(&mut serialized_receipt)

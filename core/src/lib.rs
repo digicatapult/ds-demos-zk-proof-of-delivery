@@ -40,10 +40,11 @@ pub enum Err {
     KeyParseError(#[from] serde_json::Error),
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 struct ClaimItem {
     key: String,
     value: String,
+    is_private: bool,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -51,13 +52,32 @@ pub struct CustomClaims {
     claims: Vec<ClaimItem>,
 }
 
+impl FromIterator<ClaimItem> for CustomClaims {
+    fn from_iter<I: IntoIterator<Item = ClaimItem>>(iter: I) -> Self {
+        let claims: Vec<ClaimItem> = iter.into_iter().collect();
+        CustomClaims { claims }
+    }
+}
+
 impl CustomClaims {
     pub fn new() -> Self {
         CustomClaims { claims: Vec::new() }
     }
 
-    pub fn add(&mut self, key: String, value: String) {
-        self.claims.push(ClaimItem { key, value });
+    pub fn add(&mut self, key: String, value: String, is_private: bool) {
+        self.claims.push(ClaimItem {
+            key,
+            value,
+            is_private,
+        });
+    }
+
+    pub fn public_claims(&self) -> Self {
+        self.claims
+            .clone()
+            .into_iter()
+            .filter(|claim_item| !claim_item.is_private)
+            .collect()
     }
 }
 
@@ -174,6 +194,7 @@ mod tests {
         claims.add(
             "supplier_did".to_string(),
             "did:web:example.com".to_string(),
+            true,
         );
 
         let iss = SECRET_KEY.parse::<Issuer>().unwrap();
@@ -201,8 +222,13 @@ mod tests {
         claims.add(
             "supplier_did".to_string(),
             "did:web:example.com".to_string(),
+            true,
         );
-        claims.add("delivery_size_per_month".to_string(), "1000".to_string());
+        claims.add(
+            "delivery_size_per_month".to_string(),
+            "1000".to_string(),
+            false,
+        );
 
         let iss = SECRET_KEY.parse::<Issuer>().unwrap();
         let mut token = iss.generate_token(&claims).unwrap();

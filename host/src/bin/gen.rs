@@ -23,6 +23,10 @@ fn main() {
 
     let args: Vec<String> = std::env::args().collect();
 
+    if args.len() < 4 {
+        panic!("Usage: gen /path/to/issuer_secret_key.json /path/to/custom_claims.json /path/to/token.jwt");
+    }
+
     let mut f = std::fs::File::open(&args[1])
         .expect("Please provide issuer secret key in PEM format as first argument");
     let mut secret_key = "".to_string();

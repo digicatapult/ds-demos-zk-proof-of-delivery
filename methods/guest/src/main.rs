@@ -37,7 +37,7 @@ fn main() {
         .expect("failed to validate token with any key");
 
     let mut output_strings: Vec<String> = pks.iter().map(|pk| pk.to_string()).collect();
-    output_strings.push(valid_token.claims().custom.to_string());
+    output_strings.push(valid_token.claims().custom.public_claims().to_string());
     let data = output_strings.join("||");
     env::commit(&data);
 }

@@ -25,6 +25,10 @@ fn main() {
 
     let args: Vec<String> = std::env::args().collect();
 
+    if args.len() < 2 {
+        panic!("Usage: verify /path/to/receipt.bin");
+    }
+
     let mut f = std::fs::File::open(&args[1]).expect("Could not find receipt file");
     let mut receipt = Vec::new();
     f.read_to_end(&mut receipt)
@@ -36,6 +40,7 @@ fn main() {
     let res = receipt.verify(VERIFY_TOKEN_WITH_SOME_KEY_ID);
     if res.is_ok() {
         println!("Verification succeeded!");
+        println!("Journal: {:?}", String::from_utf8(receipt.journal.bytes));
     } else {
         println!("Verification failed!")
     }
