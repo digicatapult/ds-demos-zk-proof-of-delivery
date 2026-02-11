@@ -1,16 +1,16 @@
 # Supply Chain Proof Demo
-
 This demo is a modified version of the risc0 example for JWT verification from
 the main risc0 repository
 [https://github.com/risc0/risc0/blob/main/examples/jwt-validator/src/main.rs](https://github.com/risc0/risc0/blob/main/examples/jwt-validator/src/main.rs)
 
-## Proof scenario
+## Scenario
 A user wants to prove that they have a JWT signed by one of a number of possible
 keys, but they do not want to reveal which (perhaps the customers have required
-that they must not share this information).
+that they must not share this information).  In our example, a coffee chain
+wants to prove they are capable of supplying a large amount of coffee without
+revealing the cost or the (specific) customer.
 
-The signed JWT attests to a set of custom claims that can be modified as needed.
-An example is given in `./host/custom_claims.json`.
+The signed JWT attests to a set of claims provided as input.
 
 The public inputs to the proof are:
 - A number of public keys, corresponding to potential customers.
@@ -23,12 +23,11 @@ The private inputs to the proof are:
 
 The proof proves the statement: 'This JWT was signed by a secret key
 corresponding to one of the input public  keys and records that a shipment of
-size 1000 was sent'.
+size <1000> was sent'.
 
 ## Installation
-Install rust and RISC0 per the website instructions, then run `cargo build
---release --bins`
-
+- Install rust and RISC0 per the website instructions, then run `cargo build
+--release --bins` in the repository root.
 - Install dependencies for the frontend:
 ```bash
 cd frontend
@@ -39,7 +38,7 @@ pip install -r requirements.txt
 ## Running the demo
 The process is as follows:
 - Generate and sign a proof of delivery
-- Prove 
+- Generate a zero-knowledge proof of delivery
 - Verify the proof
 
 Each operation can be performed using a GUI, e.g.:

@@ -1,18 +1,7 @@
 use clap::Parser;
 use jwt_core::CustomClaims;
-//use serde::Serialize;
 use std::io::prelude::*;
 use uuid::Uuid;
-
-// #[derive(Serialize)]
-// pub struct InvoiceClaims {
-//     reference: String, // uuid
-//     issuer_id: String,
-//     subject_id: String,
-//     product: String,
-//     quantity: i32,
-//     cost: f64,
-// }
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
