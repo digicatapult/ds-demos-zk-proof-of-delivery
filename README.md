@@ -26,45 +26,27 @@ corresponding to one of the input public  keys and records that a shipment of
 size 1000 was sent'.
 
 ## Installation
-Install RISC0, then run `cargo build --release --bins`
+Install rust and RISC0 per the website instructions, then run `cargo build
+--release --bins`
+
+- Install dependencies for the frontend:
+```bash
+cd frontend
+python -m venv .venv
+pip install -r requirements.txt
+```
 
 ## Running the demo
-Note that since proving takes considerable resources, it is recommended to use
-the development flag when testing (prefix each command with `RISC0_DEV_MODE=1`).
+The process is as follows:
+- Generate and sign a proof of delivery
+- Prove 
+- Verify the proof
 
-### Generate a token
-Run `./target/release/gen ./host/test_sk.json ./host/custom_claims.json
-./token.jwt`.  This will generate a JWT signed using a secret provided as
-command-line argument, written to the filesystem as `./issued_token.jwt`.  The
-corresponding public key should be provided as input to the proving routine,
-along with two other 'fake' public keys.
+Each operation can be performed using a GUI, e.g.:
+```bash
+cd frontend
+source .venv/bin/activate
+python gen_and_sign_pod.py
+```
 
-The JWT has custom fields that can be modified in `./core/src/lib.rs` if
-desirable (with necessary changes propagated throughout the repository).
-
-### Prove the statement
-Run `./target/release/prove ./token.jwt ./receipt.bin ./host/test_pk.json` to
-create the proof. Any number of trailing public keys can be provided and each
-will be used to attempt verification in turn until one succeeds.  This will
-likely take a long time and use lots of RAM/swap if the development flag is not
-used.
-
-This process compiles a binary
-`./target/riscv32im-risc0-zkvm-elf/verify_token_with_some_key.bin` of RISC-V-ish
-bytecode.  This binary is the compilation of the code in `./methods/guest`.  The
-ZKVM then proves its honest execution.
-
-In other words, the proof proves that the code in `./methods/guest/src` is
-honestly executed.  It should therefore not contain secret data compiled into
-it, since this is the 'circuit' the verifier will see when proving; secret data
-should be passed in from the host, along with any other per-proof
-parameters (such as the public keys).
-
-The journal is the public data associated with the proof and is included in the
-receipt.  The act of committing to the journal is itself a process undertaken in
-the code that is proven honestly executed, which allows the prover to attest to
-the fact that specific inputs were used in the proof rather than dummy ones (in
-our example, the public keys provided as input).
-
-### Verify the proof
-Run `./target/release/verify ./receipt.bin` to verify the proof. 
+Test data is provided in the `./test_data` directory.
