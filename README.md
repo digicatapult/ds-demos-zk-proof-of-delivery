@@ -8,25 +8,27 @@ A user wants to prove that they have a JWT signed by one of a number of possible
 keys, but they do not want to reveal which (perhaps the customers have required
 that they must not share this information).  In our example, a coffee supplier
 wants to prove they are capable of supplying a large amount of coffee without
-revealing the cost or the (specific) customer.
+revealing the cost or the (specific) customer, and they do this by proving that
+they have a signed invoice from one of several customers.
 
 The signed JWT attests to a set of claims provided as input.
 
 The public inputs to the proof are:
 - A number of public keys, corresponding to potential customers.
 - Claims stated by the JWT.  In this example, we have defined custom claims that
-  record the DID associated with the supplier and the amount of product that
-  they shipped.
+  record the public key associated with the supplier and the amount of product
+  that they shipped.
 
 The private inputs to the proof are:
-- The JWT (which includes metadata linking the signature to the consumer) 
+- The JWT (which includes metadata linking the signature to the customer) 
 
 The proof proves the statement: 'This JWT was signed by a secret key
 corresponding to one of the input public  keys and records that a shipment of
 size <1000> was sent'.
 
 ## Installation
-- Install rust and RISC0 per the website instructions, then run `cargo build
+- Install [rust](https://rust-lang.org/tools/install) and
+[RISC0](https://dev.risczero.com/api/zkvm/install), then run `cargo build
 --release --bins` in the repository root.
 - Install dependencies for the frontend:
 ```bash
@@ -41,7 +43,7 @@ The process is as follows:
 - Generate a zero-knowledge proof of delivery
 - Verify the proof
 
-Each operation can be performed using a GUI, e.g.:
+Each operation can be performed using a Python-based GUI, e.g.:
 ```bash
 cd frontend
 source .venv/bin/activate
