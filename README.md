@@ -6,7 +6,7 @@ the main risc0 repository
 ## Scenario
 A user wants to prove that they have a JWT signed by one of a number of possible
 keys, but they do not want to reveal which (perhaps the customers have required
-that they must not share this information).  In our example, a coffee chain
+that they must not share this information).  In our example, a coffee supplier
 wants to prove they are capable of supplying a large amount of coffee without
 revealing the cost or the (specific) customer.
 
