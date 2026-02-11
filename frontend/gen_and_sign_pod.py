@@ -2,7 +2,7 @@ import subprocess
 import os
 from gooey import Gooey, GooeyParser
 
-@Gooey(program_name="Generate and sign a Proof of Delivery", image_dir='./images')
+@Gooey(program_name="Generate and sign a Proof of Delivery")
 def main():
 
     tmp_claims_file_path = "delivery_claims.json"

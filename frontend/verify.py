@@ -4,7 +4,7 @@ from gooey import Gooey, GooeyParser
 
 TMP_DIR="./"
 
-@Gooey(program_name="Verify a Zero Knowledge Proof of Delivery", env={'GOOEY_THEME': 'dark'})
+@Gooey(program_name="Verify a Zero Knowledge Proof of Delivery")
 def main():
     parser = GooeyParser(description="")
     proof_group = parser.add_argument_group("Proof to verify")
