@@ -4,7 +4,7 @@ from gooey import Gooey, GooeyParser
 
 TMP_DIR="./"
 
-@Gooey(program_name="Generate a Zero Knowledge Proof of Delivery", image_dir='./images')
+@Gooey(program_name="Generate a Zero Knowledge Proof of Delivery")
 def main():
     parser = GooeyParser(description="")
     input_output_group = parser.add_argument_group("Input/Output files")
