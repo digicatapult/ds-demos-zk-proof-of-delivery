@@ -23,7 +23,7 @@ jobs:
       run: curl -L https://risczero.com/install | bash
 
     - name: Install risc0
-      run: source /home/runner/.bashrc && rzup install
+      run: export PATH="$PATH:~/.risc0/bin" rzup install
     
     - name: Build
       run: cargo build --verbose
