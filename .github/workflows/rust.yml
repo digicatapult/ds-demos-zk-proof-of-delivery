@@ -16,7 +16,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - uses: Swatinem/rust-cache@v2
+    
+    - name: Install rzup
+      run: curl -L https://risczero.com/install | bash
+
+    - name: Install risc0
+      run: rzup install
+    
     - name: Build
       run: cargo build --verbose
+      
     - name: Run tests
       run: cargo test --verbose
