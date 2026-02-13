@@ -30,7 +30,11 @@ def main():
     output = subprocess.run(["../target/release/gen_delivery_claims_file", "--path-to-claims-file", tmp_claims_file_path, "--issuer-id", args.issuer_id, "--subject-id", args.subject_id, "--product", args.product, "--quantity", args.quantity, "--cost", args.cost])
 
     output = subprocess.run(["../target/release/sign_pod", args.sk, tmp_claims_file_path, args.signed_pod])
-    print("Done")
+    if output.returncode != 0:
+        print("An error occurred.")
+        print(output.stderr)
+    else:
+        print("Done")
 
 if __name__ == "__main__":
     main()

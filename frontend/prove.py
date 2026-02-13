@@ -27,9 +27,12 @@ def main():
     env["RISC0_DEV_MODE"] = "1"
 
     output = subprocess.run(["../target/release/prove", args.signed_pod, args.zk_pod, args.pk_1, args.pk_2, args.pk_3], env=env, capture_output=True, text=True)
-    #print(output.stdout)
-    #print(output.stderr)
-    print("Done")
+    if output.returncode != 0:
+        print("An error occurred.")
+        print(output.stderr)
+    else:
+        print("Done")
+
 
 if __name__ == "__main__":
     main()
