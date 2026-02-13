@@ -3,3 +3,6 @@ target/
 frontend/*.jwt
 frontend/*.bin
 frontend/*.json
+frontend/__pycache__
+frontend/.pytest_cache
+frontend/.venv
