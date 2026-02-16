@@ -30,12 +30,9 @@ size <1000> was sent'.
 - Install [rust](https://rust-lang.org/tools/install) and
 [RISC0](https://dev.risczero.com/api/zkvm/install), then run `cargo build
 --release --bins` in the repository root.
-- Install dependencies for the frontend:
+- Install [poetry](https://python-poetry.org/docs/#installation) and then run
 ```bash
-cd frontend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Running the demo
@@ -44,11 +41,11 @@ The process is as follows:
 - Generate a zero-knowledge proof of delivery
 - Verify the proof
 
-Each operation can be performed using a Python-based GUI, e.g.:
+Each operation can be performed using a Python-based GUI:
 ```bash
-cd frontend
-source .venv/bin/activate
-python gen_and_sign_pod.py
+poetry run gen_and_sign_pod
+poetry run prove
+poetry run verify
 ```
 
 Test data is provided in the `./test_data` directory.

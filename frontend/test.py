@@ -6,12 +6,12 @@ import os
 # propagated to the GUIs
 
 def test_gen_and_sign_pod():
-    assert os.path.exists("../test_data/coffee_company_sk.jwk")
+    assert os.path.exists("./test_data/coffee_company_sk.jwk")
 
 def test_prove():
-    assert os.path.exists("../test_data/other_pk_1.jwk")
-    assert os.path.exists("../test_data/other_pk_2.jwk")
-    assert os.path.exists("../test_data/coffee_company_pk.jwk")
+    assert os.path.exists("./test_data/other_pk_1.jwk")
+    assert os.path.exists("./test_data/other_pk_2.jwk")
+    assert os.path.exists("./test_data/coffee_company_pk.jwk")
 
 def test_verify():
     assert True
