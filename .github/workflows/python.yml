@@ -51,6 +51,4 @@ jobs:
         cache: poetry
     - name: Test with pytest
       run: |
-        eval $(poetry env activate)
-        poetry add pytest
-        poetry run pytest -v -s frontend/test.py
+        poetry run pytest
