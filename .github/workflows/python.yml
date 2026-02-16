@@ -51,7 +51,7 @@ jobs:
         cache: poetry
     - name: Install wxPython system dependencies
       run: |
-        echo 'deb http://gb.archive.ubuntu.com/ubuntu jammy main' >> /etc/apt/sources.list
+        echo 'deb http://gb.archive.ubuntu.com/ubuntu jammy main' | sudo tee -a /etc/apt/sources.list
         sudo apt-get update
         sudo apt-get install -y \
           libgtk-3-dev \
