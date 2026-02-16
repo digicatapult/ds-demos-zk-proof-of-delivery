@@ -51,4 +51,5 @@ jobs:
         cache: poetry
     - name: Test with pytest
       run: |
+        poetry install
         poetry run pytest
