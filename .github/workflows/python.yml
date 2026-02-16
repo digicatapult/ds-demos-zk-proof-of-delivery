@@ -52,5 +52,5 @@ jobs:
     - name: Test with pytest
       run: |
         eval $(poetry env activate)
-        poetry install pytest
+        poetry add pytest
         poetry run pytest -v -s frontend/test.py
