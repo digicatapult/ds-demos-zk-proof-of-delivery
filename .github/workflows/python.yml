@@ -40,5 +40,5 @@ jobs:
         cache: poetry
     - name: Test with pytest
       run: |
-        poetry install --dev
+        poetry install
         poetry run pytest -v -s frontend/test.py
