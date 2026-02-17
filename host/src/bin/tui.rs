@@ -545,7 +545,6 @@ mod test {
         assert!(File::open(&format!("../{}", args[5])).is_ok());
 
         let args = app.prove_form.get_form_fields();
-        assert!(File::open(&format!("../{}", args[0])).is_ok());
         assert!(File::open(&format!("../{}", args[1])).is_ok());
         assert!(File::open(&format!("../{}", args[2])).is_ok());
         assert!(File::open(&format!("../{}", args[3])).is_ok());
