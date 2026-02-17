@@ -43,13 +43,10 @@ RISC0_DEV_MODE=true cargo run --bin tui 2>/dev/null
 ```
 
 > [!CAUTION]
-
-> If you do not use the RISC0_DEV_MODE=true parameter, a real proof will be
+> If you do not use the `RISC0_DEV_MODE=true` parameter, a real proof will be
 > computed, which takes around 30 minutes on a laptop.  You can kill the process
-> by running
-> ```
-> ps aux | grep cargo-risczero | grep -v grep | awk '{print $2}' | xargs kill -9
-> ```
+> by running `ps aux | grep cargo-risczero | grep -v grep | awk '{print $2}' | xargs kill -9`
+
 
 Test data is provided in the `./test_data` directory.
 
