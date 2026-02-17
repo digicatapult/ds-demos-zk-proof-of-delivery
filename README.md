@@ -28,8 +28,8 @@ size <1000> was sent'.
 
 ## Installation
 - Install [rust](https://rust-lang.org/tools/install) and
-[RISC0](https://dev.risczero.com/api/zkvm/install), then run `cargo build
---release --bins` in the repository root.
+[RISC0](https://dev.risczero.com/api/zkvm/install), then run `cargo build` in
+the repository root.
 
 ## Running the demo
 The process is as follows:
@@ -39,8 +39,17 @@ The process is as follows:
 
 Run the following in the repository root:
 ```bash
-RISC0_DEV_MODE=true cargo run --bin ui 2>/dev/null
+RISC0_DEV_MODE=true cargo run --bin tui 2>/dev/null
 ```
+
+> [!CAUTION]
+
+> If you do not use the RISC0_DEV_MODE=true parameter, a real proof will be
+> computed, which takes around 30 minutes on a laptop.  You can kill the process
+> by running
+> ```
+> ps aux | grep cargo-risczero | grep -v grep | awk '{print $2}' | xargs kill -9
+> ```
 
 Test data is provided in the `./test_data` directory.
 
