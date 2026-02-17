@@ -3,6 +3,9 @@ This demo is a modified version of the risc0 example for JWT verification from
 the main risc0 repository
 [https://github.com/risc0/risc0/blob/main/examples/jwt-validator/src/main.rs](https://github.com/risc0/risc0/blob/main/examples/jwt-validator/src/main.rs)
 
+> [!IMPORTANT]
+> This is proof-of-concept code and must not be used in a real environment.
+
 ## Scenario
 A user wants to prove that they have a JWT signed by one of a number of possible
 keys, but they do not want to reveal which (perhaps the customers have required
