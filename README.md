@@ -30,10 +30,6 @@ size <1000> was sent'.
 - Install [rust](https://rust-lang.org/tools/install) and
 [RISC0](https://dev.risczero.com/api/zkvm/install), then run `cargo build
 --release --bins` in the repository root.
-- Install [poetry](https://python-poetry.org/docs/#installation) and then run
-```bash
-poetry install
-```
 
 ## Running the demo
 The process is as follows:
@@ -41,11 +37,9 @@ The process is as follows:
 - Generate a zero-knowledge proof of delivery
 - Verify the proof
 
-Each operation can be performed using a Python-based GUI:
+Run the following in the repository root:
 ```bash
-poetry run gen_and_sign_pod
-poetry run prove
-poetry run verify
+RISC0_DEV_MODE=true cargo run --bin ui 2>/dev/null
 ```
 
 Test data is provided in the `./test_data` directory.
