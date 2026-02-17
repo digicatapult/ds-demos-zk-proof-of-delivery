@@ -63,71 +63,7 @@ use uuid::Uuid;
 fn main() -> Result<()> {
     color_eyre::install()?;
 
-    let gen_and_sign_form = InputForm {
-        fields: Vec::from([
-            StringField::new("Issuer ID", "Coffee Chain 1".to_owned()),
-            StringField::new("Supplier ID", "Coffee Supplier".to_owned()),
-            StringField::new("Product", "raw coffee beans".to_owned()),
-            StringField::new("Quantity (kg)", "1000".to_owned()),
-            StringField::new("Cost (£)", "4000.00".to_owned()),
-            StringField::new(
-                "Path to signing key",
-                "./test_data/coffee_company_sk.jwk".to_owned(),
-            ),
-            StringField::new(
-                "Path to output proof of delivery",
-                "./proof_of_delivery.jwt".to_owned(),
-            ),
-        ]),
-        focus: 0,
-    };
-
-    let prove_form = InputForm {
-        fields: Vec::from([
-            StringField::new(
-                "Path to proof of delivery",
-                "./proof_of_delivery.jwt".to_owned(),
-            ),
-            StringField::new(
-                "Path to verification key 1",
-                "./test_data/other_pk_1.jwk".to_owned(),
-            ),
-            StringField::new(
-                "Path to verification key 2",
-                "./test_data/coffee_company_pk.jwk".to_owned(),
-            ),
-            StringField::new(
-                "Path to verification key 3",
-                "./test_data/other_pk_2.jwk".to_owned(),
-            ),
-            StringField::new(
-                "Path to output Zero-Knowledge Proof of Delivery",
-                "./zkpod.bin".to_owned(),
-            ),
-        ]),
-        focus: 0,
-    };
-
-    let verify_form = InputForm {
-        fields: Vec::from([StringField::new(
-            "Path to Proof of Delivery",
-            "./zkpod.bin".to_owned(),
-        )]),
-        focus: 0,
-    };
-
-    let app = App {
-        state: AppState::Running,
-        window: AppWindow::Home,
-        home: SelectScreen::default(),
-        gen_and_sign_form,
-        prove_form,
-        verify_form,
-        result_text: "".to_string(),
-        show_popup: false,
-    };
-
-    match ratatui::run(|terminal| app.run(terminal)) {
+    match ratatui::run(|terminal| App::default().run(terminal)) {
         Ok(()) => println!("Exited"),
         Err(err) => eprintln!("{err}"),
     }
@@ -159,6 +95,74 @@ enum AppWindow {
     Prove,
     Verify,
     Result,
+}
+
+impl Default for App {
+    fn default() -> Self {
+        let gen_and_sign_form = InputForm {
+            fields: Vec::from([
+                StringField::new("Issuer ID", "Coffee Chain 1".to_owned()),
+                StringField::new("Supplier ID", "Coffee Supplier".to_owned()),
+                StringField::new("Product", "raw coffee beans".to_owned()),
+                StringField::new("Quantity (kg)", "1000".to_owned()),
+                StringField::new("Cost (£)", "4000.00".to_owned()),
+                StringField::new(
+                    "Path to signing key",
+                    "./test_data/coffee_company_sk.jwk".to_owned(),
+                ),
+                StringField::new(
+                    "Path to output proof of delivery",
+                    "./proof_of_delivery.jwt".to_owned(),
+                ),
+            ]),
+            focus: 0,
+        };
+
+        let prove_form = InputForm {
+            fields: Vec::from([
+                StringField::new(
+                    "Path to proof of delivery",
+                    "./proof_of_delivery.jwt".to_owned(),
+                ),
+                StringField::new(
+                    "Path to verification key 1",
+                    "./test_data/other_pk_1.jwk".to_owned(),
+                ),
+                StringField::new(
+                    "Path to verification key 2",
+                    "./test_data/coffee_company_pk.jwk".to_owned(),
+                ),
+                StringField::new(
+                    "Path to verification key 3",
+                    "./test_data/other_pk_2.jwk".to_owned(),
+                ),
+                StringField::new(
+                    "Path to output Zero-Knowledge Proof of Delivery",
+                    "./zkpod.bin".to_owned(),
+                ),
+            ]),
+            focus: 0,
+        };
+
+        let verify_form = InputForm {
+            fields: Vec::from([StringField::new(
+                "Path to Proof of Delivery",
+                "./zkpod.bin".to_owned(),
+            )]),
+            focus: 0,
+        };
+
+        App {
+            state: AppState::Running,
+            window: AppWindow::Home,
+            home: SelectScreen::default(),
+            gen_and_sign_form,
+            prove_form,
+            verify_form,
+            result_text: "".to_string(),
+            show_popup: false,
+        }
+    }
 }
 
 impl App {
@@ -521,5 +525,61 @@ impl Widget for &StringField {
         let label = Line::from_iter([self.label, ": "]).bold();
         label.render(label_area, buf);
         self.value.clone().render(value_area, buf);
+    }
+}
+
+#[cfg(test)]
+mod test {
+
+    use jwt_core::Validator;
+
+    use super::*;
+
+    #[test]
+    fn test_default_files_readable() {
+        // Ensures new commits do not mess up test data
+        // Testing takes place in <root>/host so need to go one level up
+        let app = App::default();
+
+        let args = app.gen_and_sign_form.get_form_fields();
+        assert!(File::open(&format!("../{}", args[5])).is_ok());
+        assert!(File::open(&format!("../{}", args[6])).is_ok());
+
+        let args = app.prove_form.get_form_fields();
+        assert!(File::open(&format!("../{}", args[0])).is_ok());
+        assert!(File::open(&format!("../{}", args[1])).is_ok());
+        assert!(File::open(&format!("../{}", args[2])).is_ok());
+        assert!(File::open(&format!("../{}", args[3])).is_ok());
+    }
+
+    #[test]
+    fn test_signing_key_parsable() {
+        // Ensures new commits do not mess up test data
+        // Testing takes place in <root>/host so need to go one level up
+        let app = App::default();
+        let args = app.gen_and_sign_form.get_form_fields();
+
+        // Signing key
+        let mut f = File::open(&format!("../{}", args[5])).unwrap();
+        let mut secret_key = "".to_string();
+        f.read_to_string(&mut secret_key).unwrap();
+
+        assert!(secret_key.parse::<Issuer>().is_ok());
+    }
+
+    #[test]
+    fn test_verification_key_parsable() {
+        // Ensures new commits do not mess up test data
+        // Testing takes place in <root>/host so need to go one level up
+        let app = App::default();
+        let args = app.prove_form.get_form_fields();
+
+        // Verification keys
+        for i in 1..4 {
+            let mut f = File::open(&format!("../{}", args[i])).unwrap();
+            let mut public_key = "".to_string();
+            f.read_to_string(&mut public_key).unwrap();
+            assert!(public_key.parse::<Validator>().is_ok());
+        }
     }
 }
