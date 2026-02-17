@@ -49,7 +49,3 @@ RISC0_DEV_MODE=true cargo run --bin tui 2>/dev/null
 
 
 Test data is provided in the `./test_data` directory.
-
-## Limitations
-Note that due to limitations of the GUI library, the frontend does not display
-properly when using dark mode on MacOS.
