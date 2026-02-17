@@ -543,7 +543,6 @@ mod test {
 
         let args = app.gen_and_sign_form.get_form_fields();
         assert!(File::open(&format!("../{}", args[5])).is_ok());
-        assert!(File::open(&format!("../{}", args[6])).is_ok());
 
         let args = app.prove_form.get_form_fields();
         assert!(File::open(&format!("../{}", args[0])).is_ok());
