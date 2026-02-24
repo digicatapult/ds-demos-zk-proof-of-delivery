@@ -1,12 +1,12 @@
 [package]
 name = "host"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 [dependencies]
 methods = { path = "../methods" }
 risc0-zkvm = { version = "^3.0.5" }
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 serde = "1.0.228"
 jwt-core = { path = "../core" }
 jwt-compact = { version = "0.8", features = ["rsa"] }
